@@ -84,7 +84,7 @@ function App() {
                       changeFilter={changeTodolistFilter}
                       addTask={addTask}
                       changeTaskStatus={changeStatus}
-                      filter={filter}
+                      filter={filte r}
             />
         </div>
     );
