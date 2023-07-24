@@ -1,5 +1,6 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
 import {FilterValuesType} from './App';
+import {AddItemForm} from "./AddItemForm";
 
 export type TaskType = {
     id: string
@@ -10,26 +11,25 @@ export type TaskType = {
 type PropsType = {
     title: string
     tasks: Array<TaskType>
-    removeTask: (taskId: string) => void
-    changeFilter: (value: FilterValuesType) => void
-    addTask: (title: string) => void
-    changeTaskStatus: (taskId: string, isDone: boolean) => void
-    filter: FilterValuesType
+    removeTodolist: (todolistId: string) => void
+    removeTask: (taskId: string, todolistId: string) => void
+    changeTodolistFilter: (value: FilterValuesType, todolistId: string) => void
+    addTask: (title: string, todolistId: string) => void
+    changeTaskStatus: (taskId: string, isDone: boolean, todolistId: string) => void
+    todolistId: string
+    todolistFilter: FilterValuesType
 }
 
 export const Todolist: FC<PropsType> = (props: PropsType) => {
-
-    let [title, setTitle] = useState("")
-    let [error, setError] = useState<boolean>(false)
 
     const tasksList = (props.tasks.length === 0)
         ? <p>Todolist is empty</p>
         : <ul>
             {
                 props.tasks.map(t => {
-                    const onClickHandler = () => props.removeTask(t.id)
+                    const onClickHandler = () => props.removeTask(t.id, props.todolistId)
                     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                        props.changeTaskStatus(t.id, e.currentTarget.checked);
+                        props.changeTaskStatus(t.id, e.currentTarget.checked, props.todolistId);
                     }
 
                     return <li key={t.id} className={t.isDone ? "is-done" : ""}>
@@ -43,62 +43,33 @@ export const Todolist: FC<PropsType> = (props: PropsType) => {
             }
         </ul>
 
-    const currentSymbols = title.length
-
-    const maxTasksTitleLength = 15
-
-    const isTaskTitleLengthTooLong = title.length > maxTasksTitleLength
-
-    const isAddTaskBtnDisabled = !title || isTaskTitleLengthTooLong
-
-    const addTask = () => {
-        if (title.trim() !== "") {
-            props.addTask(title.trim());
-            setTitle("");
-        } else {
-            setError(true);
-        }
+    const addTaskTodolist = (title: string) => {
+        props.addTask(title, props.todolistId)
     }
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        if (!isTaskTitleLengthTooLong) {
-            setTitle(e.currentTarget.value)
-        }
-    }
+    const onAllClickHandler = () => props.changeTodolistFilter("all", props.todolistId);
+    const onActiveClickHandler = () => props.changeTodolistFilter("active", props.todolistId);
+    const onCompletedClickHandler = () => props.changeTodolistFilter("completed", props.todolistId);
 
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(false);
-        if (e.charCode === 13) {
-            addTask();
-        }
+    const deleteTodolistHandler = () => {
+        props.removeTodolist(props.todolistId)
     }
-
-    const onAllClickHandler = () => props.changeFilter("all");
-    const onActiveClickHandler = () => props.changeFilter("active");
-    const onCompletedClickHandler = () => props.changeFilter("completed");
 
 
     return <div>
-        <h3>{props.title}</h3>
-        <div>
-            <input value={title}
-                   onChange={onChangeHandler}
-                   onKeyPress={onKeyPressHandler}
-                   className={error ? "error" : ""}
-            />
-            <button disabled={isAddTaskBtnDisabled} onClick={addTask}>+</button>
-            {error && <div className="error-message">Please, enter correct title</div>}
-        </div>
-        <h5>{currentSymbols}</h5>
+        <h3>{props.title}
+        <button onClick={deleteTodolistHandler}>delete</button>
+        </h3>
+         <AddItemForm maxTasksTitleLength={15} addNewItem={addTaskTodolist}/>
         {tasksList}
         <div>
-            <button className={props.filter === 'all' ? "active-filter" : ""}
+            <button className={props.todolistFilter === 'all' ? "active-filter" : ""}
                     onClick={onAllClickHandler}>All
             </button>
-            <button className={props.filter === 'active' ? "active-filter" : ""}
+            <button className={props.todolistFilter === 'active' ? "active-filter" : ""}
                     onClick={onActiveClickHandler}>Active
             </button>
-            <button className={props.filter === 'completed' ? "active-filter" : ""}
+            <button className={props.todolistFilter === 'completed' ? "active-filter" : ""}
                     onClick={onCompletedClickHandler}>Completed
             </button>
         </div>

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
+import {AddItemForm} from "./AddItemForm";
 
 export type FilterValuesType = "all" | "active" | "completed";
 type TodolistType = {
@@ -41,6 +42,18 @@ function App() {
         {id: todolistId_2, title: "What to buy?", filter: "all"}
     ])
 
+    const removeTodolist = (todolistId: string) => {
+        setTodolist(todolist.filter(tl => tl.id != todolistId))
+        delete tasks[todolistId]
+    }
+
+
+    const addTodolist = (title: string) => {
+        const newTodolistId = v1()
+        setTodolist([{id: newTodolistId, title: title, filter: "all"} ,...todolist])
+        setTasks({...tasks, [newTodolistId]: []})
+    }
+
     function changeTodolistFilter(value: FilterValuesType, todolistId: string) {
         const updateTodolists: TodolistType[] = todolist.map(tl => tl.id === todolistId
             ? {...tl, filter: value} : tl)
@@ -73,19 +86,28 @@ function App() {
             }
         }
 
-    const filteredTasks: TaskType[] = getFilteredTasks(tasks, filter)
+
+    const todolistComponents: Array<JSX.Element> = todolist.map(tl => {
+        const filteredTasks: TaskType[] = getFilteredTasks(tasks[tl.id], tl.filter)
+        return <Todolist title={tl.title}
+                         tasks={filteredTasks}
+                         removeTask={removeTask}
+                         removeTodolist={removeTodolist}
+                         changeTodolistFilter={changeTodolistFilter}
+                         addTask={addTask}
+                         changeTaskStatus={changeStatus}
+                         todolistId={tl.id}
+                         todolistFilter={tl.filter}
+                         key={tl.id}
+
+        />
+    })
 
 
     return (
         <div className="App">
-            <Todolist title="What to learn"
-                      tasks={filteredTasks}
-                      removeTask={removeTask}
-                      changeFilter={changeTodolistFilter}
-                      addTask={addTask}
-                      changeTaskStatus={changeStatus}
-                      filter={filte r}
-            />
+            <AddItemForm addNewItem={addTodolist} maxTasksTitleLength={15}/>
+            {todolistComponents}
         </div>
     );
 }
