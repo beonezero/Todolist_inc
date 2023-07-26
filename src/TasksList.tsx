@@ -1,6 +1,8 @@
 import React, {ChangeEvent} from 'react';
 import {TaskType} from "./Todolist";
 import {EditableSpan} from "./EditableSpan";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import {Checkbox} from "@mui/material";
 
 type TasksListPropsType = {
     todolistId: string
@@ -25,11 +27,11 @@ export const TasksList = (props: TasksListPropsType) => {
                     }
 
                     return <li key={t.id} className={t.isDone ? "is-done" : ""}>
-                        <input type="checkbox"
+                        <Checkbox size={"small"}
                                onChange={onChangeHandler}
                                checked={t.isDone}/>
                         <EditableSpan title={t.title} ChangeTitle={ChangeTaskTitleHandler}/>
-                        <button onClick={onClickHandler}>x</button>
+                        <DeleteForeverIcon onClick={onClickHandler}/>
                     </li>
                 })
             }

@@ -1,7 +1,14 @@
 
 .App {
-  padding: 30px;
-  display: flex;
+}
+.Container {
+  padding: 20px;
+}
+
+.todolist {
+  height: max-content;
+  padding: 10px;
+  margin-top: 10px
 }
 
 .App > div {

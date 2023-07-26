@@ -3,6 +3,9 @@ import {FilterValuesType} from './App';
 import {AddItemForm} from "./AddItemForm";
 import {TasksList} from "./TasksList";
 import {EditableSpan} from "./EditableSpan";
+import {Button, ButtonGroup} from "@mui/material";
+import s from "./Todolist.module.css"
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 export type TaskType = {
     id: string
@@ -44,21 +47,21 @@ export const Todolist: FC<PropsType> = (props: PropsType) => {
 
     return <div>
         <h3><EditableSpan title={props.title} ChangeTitle={ChangeTodolistTitleHandler}/>
-            <button onClick={deleteTodolistHandler}>delete</button>
+            <RemoveCircleIcon onClick={deleteTodolistHandler}/>
         </h3>
         <AddItemForm maxTasksTitleLength={15} addNewItem={addTaskTodolist}/>
         <TasksList changeTaskTitle={props.changeTaskTitle} todolistId={props.todolistId} changeTaskStatus={props.changeTaskStatus} removeTask={props.removeTask} tasks={props.tasks}/>
 
-        <div>
-            <button className={props.todolistFilter === 'all' ? "active-filter" : ""}
+        <div  className={s.buttonGroup}>
+            <Button size={"small"} variant={"contained"} color={props.todolistFilter === 'all' ? "success" : "error"}
                     onClick={onAllClickHandler}>All
-            </button>
-            <button className={props.todolistFilter === 'active' ? "active-filter" : ""}
+            </Button>
+            <Button size={"small"} variant={"contained"} color={props.todolistFilter === 'active' ? "success" : "error"}
                     onClick={onActiveClickHandler}>Active
-            </button>
-            <button className={props.todolistFilter === 'completed' ? "active-filter" : ""}
+            </Button>
+            <Button size={"small"} variant={"contained"} color={props.todolistFilter === 'completed' ? "success" : "error"}
                     onClick={onCompletedClickHandler}>Completed
-            </button>
+            </Button>
         </div>
     </div>
 }

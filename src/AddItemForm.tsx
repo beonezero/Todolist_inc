@@ -1,4 +1,6 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import {TextField} from "@mui/material";
 
 type AddItemFormPropsType = {
     maxTasksTitleLength: number
@@ -6,9 +8,9 @@ type AddItemFormPropsType = {
 }
 
 export const AddItemForm: FC<AddItemFormPropsType> = ({
-    maxTasksTitleLength,
-    addNewItem
-}) => {
+                                                          maxTasksTitleLength,
+                                                          addNewItem
+                                                      }) => {
     const [error, setError] = useState<boolean>(false)
     const [title, setTitle] = useState("")
 
@@ -44,12 +46,17 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({
 
     return (
         <div>
-            <input value={title}
-                   onChange={onChangeHandler}
-                   onKeyPress={onKeyPressHandler}
-                   className={error ? "error" : ""}
+            <TextField
+                size={"small"}
+                id="outlined-basic"
+                label="Add task"
+                variant="outlined"
+                value={title}
+                onChange={onChangeHandler}
+                onKeyPress={onKeyPressHandler}
+                className={error ? "error" : ""}
             />
-            <button disabled={isAddItemBtnDisabled} onClick={addItem}>+</button>
+            <AddIcon onClick={addItem}/>
             {userMaxLengthMessage}
             {userErrorMessage}
         </div>
