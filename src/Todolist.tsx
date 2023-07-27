@@ -45,7 +45,7 @@ export const Todolist: FC<PropsType> = (props: PropsType) => {
     }
 
 
-    return <div>
+    return <div className={s.Todolist}>
         <h3><EditableSpan title={props.title} ChangeTitle={ChangeTodolistTitleHandler}/>
             <RemoveCircleIcon onClick={deleteTodolistHandler}/>
         </h3>

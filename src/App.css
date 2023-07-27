@@ -1,8 +1,8 @@
-
 .App {
 }
-.Container {
-  padding: 20px;
+
+.addTodolistForm {
+  margin: 20px 0 50px 0;
 }
 
 .todolist {
