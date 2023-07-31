@@ -3,7 +3,7 @@ import {v1} from "uuid";
 
 export type actionType = removeTodolistAC | addTodolistAC | changeTodolistFilterType | changeTodolistTitleType
 
-type removeTodolistAC = {
+export type removeTodolistAC = {
     type: "REMOVE-TODOLIST"
     todolistId: string
 }
