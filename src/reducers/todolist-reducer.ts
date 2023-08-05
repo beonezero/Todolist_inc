@@ -26,7 +26,9 @@ type changeTodolistTitleType = {
     todolistId: string
 }
 
-export const todolistReducer = (todolist: TodolistType[], action: actionType): TodolistType[] => {
+let initialState: TodolistType[] = []
+
+export const todolistReducer = (todolist = initialState, action: actionType): TodolistType[] => {
     switch (action.type) {
 
         case "REMOVE-TODOLIST":

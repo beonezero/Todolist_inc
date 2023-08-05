@@ -39,7 +39,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(false);
-        if (e.charCode === 13) {
+        if (e.keyCode === 13) {
             addItem();
         }
     }
